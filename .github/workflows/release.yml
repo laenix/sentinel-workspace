@@ -16,13 +16,10 @@ jobs:
         include:
           - os: windows-latest
             platform: windows/amd64
-            ext: .exe
           - os: macos-latest
             platform: darwin/universal
-            ext: .app
           - os: ubuntu-22.04
             platform: linux/amd64
-            ext: ''
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -60,7 +57,10 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: success()
         with:
-          files: build/bin/*${{ matrix.ext }}
+          files: |
+            build/bin/*.exe
+            build/bin/*.app
+            build/bin/sentinel-workspace
           draft: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
