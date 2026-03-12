@@ -51,7 +51,15 @@ jobs:
           npm ci
 
       - name: Build ${{ matrix.platform }}
+        if: matrix.platform != 'darwin/universal'
         run: wails build -platform ${{ matrix.platform }}
+
+      - name: Build macOS
+        if: matrix.platform == 'darwin/universal'
+        run: |
+          wails build -platform darwin/universal
+          cd build/bin
+          zip -r sentinel-workspace.app.zip sentinel-workspace.app
 
       - name: Upload release asset
         uses: softprops/action-gh-release@v2
@@ -59,8 +67,8 @@ jobs:
         with:
           files: |
             build/bin/*.exe
-            build/bin/*.app
             build/bin/sentinel-workspace
+            build/bin/*.zip
           draft: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
