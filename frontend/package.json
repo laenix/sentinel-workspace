@@ -1,0 +1,36 @@
+{
+  "name": "frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@kusto/monaco-kusto": "^14.1.0",
+    "@monaco-editor/react": "^4.7.0",
+    "@tailwindcss/vite": "^4.2.1",
+    "lucide-react": "^0.575.0",
+    "mermaid": "^11.12.3",
+    "monaco-editor": "^0.52.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-markdown": "^10.1.0",
+    "react-virtuoso": "^4.18.1",
+    "react-window": "^2.2.7",
+    "remark-gfm": "^4.0.1",
+    "tailwindcss": "^4.2.1",
+    "zustand": "^5.0.11"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
+    "@vitejs/plugin-react": "^5.1.4",
+    "path-browserify": "^1.0.1",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1",
+    "vite-plugin-monaco-editor": "^1.1.0"
+  }
+}
