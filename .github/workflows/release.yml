@@ -1,0 +1,60 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            platform: windows/amd64
+            ext: .exe
+          - os: macos-latest
+            platform: darwin/universal
+            ext: .app
+          - os: ubuntu-latest
+            platform: linux/amd64
+            ext: ''
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Wails
+        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Build ${{ matrix.platform }}
+        run: wails build -platform ${{ matrix.platform }}
+        env:
+          CGO_ENABLED: 0
+
+      - name: Upload release asset
+        uses: softprops/action-gh-release@v1
+        with:
+          files: build/bin/*${{ matrix.ext }}
+          draft: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
